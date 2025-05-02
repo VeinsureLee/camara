@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>我的信息</h2>
+<p>用户名：{{ user.username }}</p>
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <input type="file" name="avatar">
+    <button type="submit">上传头像</button>
+</form>
+
+{% if user.profile.avatar %}
+    <img src="{{ user.profile.avatar.url }}" width="100">
+{% endif %}
+{% endblock %}

@@ -43,6 +43,6 @@ Detection/car_recognition/CarIdentityData/pictures
 Detection/human_face_recognition/facebase/test01
 Detection/model/data
 Detection/skl_detect
-mysite
+my_flask_app
 photo_download/downloaded_images
 yolov5

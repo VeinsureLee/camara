@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的网站</title>
+</head>
+<body>
+<nav>
+    <a href="{% url 'home' %}">主页</a> |
+    <a href="{% url 'profile' %}">我的</a>
+</nav>
+<hr>
+{% block content %}{% endblock %}
+</body>
+</html>

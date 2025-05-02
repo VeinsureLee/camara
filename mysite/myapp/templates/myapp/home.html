@@ -1,0 +1,16 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>欢迎，{{ user.username }}</h2>
+
+<form method="post">{% csrf_token %}
+    <input type="text" name="scene_name" placeholder="创建新案例">
+    <button type="submit">创建</button>
+</form>
+
+<h3>你的案例：</h3>
+<ul>
+    {% for scene in scenes %}
+        <li>{{ scene.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

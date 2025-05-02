@@ -1,0 +1,18 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<h2>登录</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="username">用户名：</label><br>
+    <input type="text" name="username" id="username" required><br><br>
+
+    <label for="password">密码：</label><br>
+    <input type="password" name="password" id="password" required><br><br>
+
+    <button type="submit">登录</button>
+</form>
+
+<p>没有账号？<a href="{% url 'register' %}">点击注册</a></p>
+{% endblock %}
