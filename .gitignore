@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# PyCharm specific
+.idea/
+
+# VSCode
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Test cache
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# dotenv environment variable files
+.env
+
+# dataset(train model)
+Detection/car_recognition/CarIdentityData/cnn_char_train
+Detection/car_recognition/CarIdentityData/cnn_plate_train
+Detection/car_recognition/CarIdentityData/opencv_output
+Detection/car_recognition/CarIdentityData/pictures
+Detection/human_face_recognition/facebase/test01
+Detection/model/data
+Detection/skl_detect
+mysite
+photo_download/downloaded_images
+yolov5
