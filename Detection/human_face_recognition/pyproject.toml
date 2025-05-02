@@ -1,0 +1,18 @@
+[project]
+name = "human_face_detect"
+version = "0.1.0"
+description = "face_recognition-based human face detector using Ultralytics"
+authors = [
+    {name = "Veinsure Lee", email = "35186851@qq.com"}
+]
+dependencies = [
+    "os",
+    "cv2-python",
+    "numpy",
+    "face_recognition",
+    "PIL"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

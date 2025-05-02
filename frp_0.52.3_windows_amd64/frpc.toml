@@ -1,0 +1,14 @@
+transport.tls.enable = false
+serverAddr = "101.42.227.59"
+serverPort = 15443
+
+auth.token = "01e4n61UU3B2COMj"
+
+
+
+[[proxies]]
+name = "esp32cam-test"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 9000
+remotePort = 9000

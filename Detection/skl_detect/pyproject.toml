@@ -1,0 +1,18 @@
+[project]
+name = "skl_detect"
+version = "0.1.0"
+description = "mediapipe-based human skelon detector"
+authors = [
+    {name = "Veinsure Lee", email = "35186851@qq.com"}
+]
+dependencies = [
+    "mediapipe",
+    "os",
+    "numpy",
+    "opencv-python"
+
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

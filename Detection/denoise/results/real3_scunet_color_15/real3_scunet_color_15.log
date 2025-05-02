@@ -1,0 +1,9 @@
+25-04-16 10:35:24.891 : Model path: model_zoo\scunet_color_15.pth
+25-04-16 10:35:24.892 : Params number: 17946072
+25-04-16 10:35:24.892 : model_name:scunet_color_15, image sigma:25
+25-04-16 10:35:24.893 : testsets\real3
+25-04-16 10:35:24.894 :          #Params : 17.9461 [M]
+25-04-16 10:35:28.109 : building.png - PSNR: 23.81 dB; SSIM: 0.6658.
+25-04-16 10:35:31.473 : palace.png - PSNR: 22.92 dB; SSIM: 0.7655.
+25-04-16 10:35:34.586 : stars.png - PSNR: 24.40 dB; SSIM: 0.6124.
+25-04-16 10:35:34.605 : Average PSNR/SSIM(RGB) - real3_scunet_color_15 - PSNR: 23.71 dB; SSIM: 0.6813

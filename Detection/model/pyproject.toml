@@ -1,0 +1,21 @@
+[project]
+name = "model"
+version = "0.1.0"
+description = "CNN-based human action detector model"
+authors = [
+    {name = "Veinsure Lee", email = "35186851@qq.com"}
+]
+dependencies = [
+    "os",
+    "numpy",
+    "torch",
+    "torch",
+    "sklearn",
+    "mediapipe",
+    "logging",
+    "cv2"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
