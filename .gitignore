@@ -46,4 +46,3 @@ Detection/skl_detect
 my_flask_app
 photo_download/downloaded_images
 yolov5
-mysite/db.sqlite3

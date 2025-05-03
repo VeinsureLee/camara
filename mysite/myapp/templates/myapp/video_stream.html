@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>远程监控 - 视频流</title>
+    <style>
+        body {
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        #video-frame {
+            width: 720px;
+            height: auto;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>远程监控画面</h1>
+    <img id="video-frame" src="" alt="视频帧加载中..." />
+    <script>
+        const ws = new WebSocket("ws://localhost:8000/ws/video/");
+        const videoImg = document.getElementById("video-frame");
+
+        ws.onopen = () => {
+            console.log("WebSocket 已连接");
+        };
+
+        ws.onmessage = (event) => {
+            // 假设收到的是 base64 编码的 JPEG 图像
+            videoImg.src = "data:image/jpeg;base64," + event.data;
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket 已关闭");
+        };
+
+        ws.onerror = (error) => {
+            console.error("WebSocket 错误：", error);
+        };
+    </script>
+</body>
+</html>

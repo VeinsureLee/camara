@@ -5,6 +5,12 @@ from .models import Profile, Scene
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import base64
+from redis.exceptions import ConnectionError
 
 
 def register_view(request):
@@ -64,3 +70,31 @@ def profile_view(request):
         profile.avatar = request.FILES['avatar']
         profile.save()
     return render(request, 'myapp/profile.html')
+
+
+def video_stream_view(request):
+    return render(request, 'myapp/video_stream.html')
+
+
+@csrf_exempt
+def upload_image(request):
+    if request.method == 'POST' and 'image' in request.FILES:
+        image_data = request.FILES['image'].read()
+        base64_data = base64.b64encode(image_data).decode('utf-8')
+
+        try:
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "video_group",
+                {
+                    "type": "send_frame",
+                    "image": base64_data,
+                }
+            )
+        except ConnectionError:
+            print("Redis连接失败，跳过广播。")
+            pass
+
+        return JsonResponse({"status": "ok"})
+
+    return JsonResponse({"status": "fail"}, status=400)
