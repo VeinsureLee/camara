@@ -3,29 +3,47 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm
 from .models import Profile, Scene
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 def register_view(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            Profile.objects.create(user=user)  # 创建用户资料
-            return redirect('login')
-    else:
-        form = RegisterForm()
-    return render(request, 'myapp/register.html', {'form': form})
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, '用户名已存在，请更换。')
+            return redirect('register')
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+
+        # 只创建一次 Profile
+        Profile.objects.create(user=user)  # 如果 signals 中已自动创建可省略
+
+        messages.success(request, '注册成功，欢迎加入！')
+        return redirect('register')  # 或重定向到 login
+    return render(request, 'myapp/register.html')
 
 
 def login_view(request):
+    error = ""
     if request.method == 'POST':
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        if user:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)  # 核对账号密码
+        if user is not None:
             login(request, user)
             return redirect('home')
-    return render(request, 'myapp/login.html')
+        else:
+            error = "用户名或密码错误"
+    return render(request, 'myapp/login.html', {'error': error})
+
+
+def logout_view(request):
+    logout(request)  # 清除当前用户的会话
+    return redirect('login')  # 注销后跳转到登录页面
 
 
 @login_required
@@ -39,7 +57,10 @@ def home_view(request):
 @login_required
 def profile_view(request):
     if request.method == 'POST' and request.FILES:
-        profile = request.user.profile
+        try:
+            profile = request.user.profile
+        except Profile.DoesNotExist:
+            profile = Profile.objects.create(user=request.user)
         profile.avatar = request.FILES['avatar']
         profile.save()
     return render(request, 'myapp/profile.html')

@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', lambda request: redirect('home')),  # 👈 空路径跳转到 'home'
+    path('', lambda request: redirect('home')),  # 空路径跳转到 'home'
     path('', include('myapp.urls')),
 ]
 

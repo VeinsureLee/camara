@@ -1,16 +1,46 @@
 {% extends 'myapp/base.html' %}
+
 {% block content %}
-<h2>欢迎，{{ user.username }}</h2>
+<div class="container mt-4">
 
-<form method="post">{% csrf_token %}
-    <input type="text" name="scene_name" placeholder="创建新案例">
-    <button type="submit">创建</button>
-</form>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">
+<!--            <img src="/static/favicon.ico" width="32" height="32" class="me-2">-->
+<!--            欢迎，{{ user.username }}-->
+            {% if request.user.is_authenticated %}
+                <img src="{{ request.user.profile.avatar.url }}" width="32" height="32" class="rounded-circle me-2">
+                欢迎，{{ request.user.username }}
+            {% endif %}
+        </h2>
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger">退出登录</a>
+    </div>
 
-<h3>你的案例：</h3>
-<ul>
-    {% for scene in scenes %}
-        <li>{{ scene.name }}</li>
-    {% endfor %}
-</ul>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="post" class="row g-3 align-items-center">
+                {% csrf_token %}
+                <div class="col-auto">
+                    <input type="text" name="scene_name" class="form-control" placeholder="创建新案例" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">你的案例列表</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for scene in scenes %}
+                <li class="list-group-item">{{ scene.name }}</li>
+            {% empty %}
+                <li class="list-group-item text-muted">暂无案例</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
 {% endblock %}
