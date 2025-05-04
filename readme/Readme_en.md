@@ -53,11 +53,11 @@ with plans to switch to Raspberry Pi in future iterations.
 **System Architecture:**
 
 <div align="center">
-  <img src="demo/pic/construct/esp32视频监控.png" alt="ESP32 Framework" width="400">
+  <img src="../demo/pic/construct/esp32视频监控.png" alt="ESP32 Framework" width="400">
 </div>
 
 <div align="center">
-  <img src="demo/pic/construct/raspberrypi.png" alt="Raspberry Pi Framework" width="400">
+  <img src="../demo/pic/construct/raspberrypi.png" alt="Raspberry Pi Framework" width="400">
 </div>
 
 ---
@@ -100,28 +100,29 @@ Then run the following commands in the root directory:
 ```
 python main.py
 ```
+
 #### ✅ PySide6 GUI Display
 
 - **Video Streaming Display**  
   <div align="center">
-    <img src="demo/gif/demo_pyside_show.gif" alt="Video Display" width="400">
+    <img src="../demo/gif/demo_pyside_show.gif" alt="Video Display" width="400">
   </div>
 
 - **Human Detection Enabled**  
   <div align="center">
-    <img src="demo/gif/demo_human_detect.gif" alt="Human Detection" width="400">
+    <img src="../demo/gif/demo_human_detect.gif" alt="Human Detection" width="400">
   </div>  
   *Note: Dim lighting; displays "Unknown face, Unknown action"*
 
 - **Face Recognition Enabled**  
   <div align="center">
-    <img src="demo/gif/demo_face_detect.gif" alt="Face Recognition" width="400">
+    <img src="../demo/gif/demo_face_detect.gif" alt="Face Recognition" width="400">
   </div>  
   *Displays: test01, Unknown action*
 
 - **Action Recognition Enabled**  
   <div align="center">
-    <img src="demo/gif/demo_action_detect.gif" alt="Action Recognition" width="400">
+    <img src="../demo/gif/demo_action_detect.gif" alt="Action Recognition" width="400">
   </div>  
   *Displays: test01, fall down*  
   
@@ -134,12 +135,12 @@ python main.py
 
 **Before:**
 <div align="center">
-  <img src="demo/gif/demo_car.gif" alt="Before Plate Recognition" width="400">
+  <img src="../demo/gif/demo_car.gif" alt="Before Plate Recognition" width="400">
 </div>
 
 **After:**
 <div align="center">
-  <img src="demo/gif/demo_car_plate_detect.gif" alt="After Plate Recognition" width="400">
+  <img src="../demo/gif/demo_car_plate_detect.gif" alt="After Plate Recognition" width="400">
 </div>
 
 #### 🔜 Web page displaying camera feed
