@@ -1,5 +1,5 @@
 import threading
-import camara
+import camera
 import fpr
 import test
 # 创建线程

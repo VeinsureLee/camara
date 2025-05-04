@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "human-detect"
+name = "camera"
 version = "0.1.0"
-description = "human detect(locate coordinates)"
+description = "Remote Video Monitoring System"
 authors = ["Veinsure <35186851@qq.com>"]
 readme = "README.md"
 

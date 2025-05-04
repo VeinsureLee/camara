@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm
 from .models import Profile, Scene
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,6 +10,9 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import base64
 from redis.exceptions import ConnectionError
+import cv2
+from django.http import StreamingHttpResponse
+from django.views.decorators import gzip
 
 
 def register_view(request):
@@ -76,25 +78,50 @@ def video_stream_view(request):
     return render(request, 'myapp/video_stream.html')
 
 
-@csrf_exempt
-def upload_image(request):
-    if request.method == 'POST' and 'image' in request.FILES:
-        image_data = request.FILES['image'].read()
-        base64_data = base64.b64encode(image_data).decode('utf-8')
+# @csrf_exempt
+# def upload_image(request):
+#     if request.method == 'POST' and 'image' in request.FILES:
+#         image_data = request.FILES['image'].read()
+#         base64_data = base64.b64encode(image_data).decode('utf-8')
+#
+#         try:
+#             channel_layer = get_channel_layer()
+#             async_to_sync(channel_layer.group_send)(
+#                 "video_group",
+#                 {
+#                     "type": "send_frame",
+#                     "image": base64_data,
+#                 }
+#             )
+#         except ConnectionError:
+#             print("Redis连接失败，跳过广播。")
+#             pass
+#
+#         return JsonResponse({"status": "ok"})
+#
+#     return JsonResponse({"status": "fail"}, status=400)
 
-        try:
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                "video_group",
-                {
-                    "type": "send_frame",
-                    "image": base64_data,
-                }
-            )
-        except ConnectionError:
-            print("Redis连接失败，跳过广播。")
-            pass
 
-        return JsonResponse({"status": "ok"})
+# 视频帧生成器
+def gen_frames():
+    cap = cv2.VideoCapture(0)  # 打开默认摄像头
+    while True:
+        success, frame = cap.read()
+        if not success:
+            break
+        else:
+            # 编码成JPEG格式
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            # 生成 multipart 的视频流响应内容
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-    return JsonResponse({"status": "fail"}, status=400)
+
+@gzip.gzip_page
+def video_feed(request):
+    return StreamingHttpResponse(gen_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+
+
+def index(request):
+    return render(request, 'camera/video_stream.html')

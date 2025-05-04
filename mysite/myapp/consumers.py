@@ -5,6 +5,10 @@ from django.core.cache import cache
 
 
 class VideoStreamConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.room_group_name = None
+
     async def connect(self):
         # WebSocket连接时的操作
         self.room_group_name = 'video_stream'

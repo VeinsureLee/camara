@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "human-detect"
+name = "detection"
 version = "0.1.0"
-description = "human detect(locate coordinates)"
+description = "human detection(place detection, face recognition, action detection)"
 authors = ["Veinsure <35186851@qq.com>"]
 readme = "README.md"
 

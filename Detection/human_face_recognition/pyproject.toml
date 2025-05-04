@@ -1,18 +1,14 @@
-[project]
-name = "human_face_detect"
+[tool.poetry]
+name = "human-face-recognition"
 version = "0.1.0"
-description = "face_recognition-based human face detector using Ultralytics"
-authors = [
-    {name = "Veinsure Lee", email = "35186851@qq.com"}
-]
-dependencies = [
-    "os",
-    "cv2-python",
-    "numpy",
-    "face_recognition",
-    "PIL"
-]
+description = "human face recognition by face_recognize"
+authors = ["Veinsure <35186851@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
 
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

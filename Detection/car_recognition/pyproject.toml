@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "human-detect"
+name = "car-recognition"
 version = "0.1.0"
-description = "human detect(locate coordinates)"
+description = "car plate recognition(every car, high pixal)"
 authors = ["Veinsure <35186851@qq.com>"]
 readme = "README.md"
 

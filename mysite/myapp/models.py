@@ -5,6 +5,8 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
+    DoesNotExist = None
+    objects = None
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/default.png')
 
@@ -13,6 +15,7 @@ class Profile(models.Model):
 
 
 class Scene(models.Model):
+    objects = None
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
 
