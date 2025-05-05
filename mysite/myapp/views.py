@@ -4,12 +4,6 @@ from .models import Profile, Scene
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-import base64
-from redis.exceptions import ConnectionError
 import cv2
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
@@ -125,3 +119,15 @@ def video_feed(request):
 
 def index(request):
     return render(request, 'camera/video_stream.html')
+
+
+def about_view(request):
+    return render(request, 'myapp/about.html')
+
+
+def settings_view(request):
+    return render(request, 'myapp/settings.html')
+
+
+def help_view(request):
+    return render(request, 'myapp/help.html')

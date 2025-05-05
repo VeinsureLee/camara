@@ -1,8 +1,9 @@
-# 情况说明
-## 一、模块功能
-### 1、完成本地网站搭建
-### 2、完成简单网页跳转
+# Situation Statement
+## I. Module Functions
+### 1.Complete local website setup
+### 2.Implement simple webpage redirection
 
-## 二、模块进度
-### 1、简单搭建跳转逻辑
-### 2、初步的注册与登录逻辑
+## II. Module Progress
+### 1.Basic redirection logic established
+### 2.Preliminary registration and login logic implemented
+### 3.Basic video show by computer camera

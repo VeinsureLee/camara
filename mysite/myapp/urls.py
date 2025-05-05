@@ -11,4 +11,7 @@ urlpatterns = [
     path('video_stream/', views.video_stream_view, name='video_stream'),
     # path('upload/', upload_image, name='upload'),
     path('video_feed/', views.video_feed, name='video_feed'),
+    path('about/', views.about_view, name='about'),
+    path('settings/', views.settings_view, name='settings'),
+    path('help/', views.help_view, name='help'),
 ]

@@ -5,7 +5,7 @@ from Detection.human_face_recognition.human_face_recognition.face_detect import 
 from Detection.model.model.predict import pose_status  # 姿态识别函数（接受 frame 或 crop）
 from Detection.model.model.config_ActionDetector import ActionDetectorConfig
 from Detection.human_detect.human_detect.config_HumanDetector import HumanDetectorConfig
-import torch
+
 
 action_model_config = ActionDetectorConfig(
     labels=None,
