@@ -168,19 +168,23 @@ def run_camera(known_face_encodings, known_face_names,
     cv2.destroyAllWindows()
 
 
-if __name__ == "__main__":
-    # 加载人脸数据库
+def main():
+    from img_show import show_auto_scaled_image
     encodings, names = load_face_database('./human_face_recognition/facebase')
+    # 读取测试图片
+    img = cv2.imread('./pinshi.png')
+    show_auto_scaled_image(img, "Original Image")
+    # 处理图像并获取绘制后的结果
+    _, img_pre = draw_detection(img, True, True, True, encodings, names)
+    show_auto_scaled_image(img_pre, "Detection Result")
 
-    # # 读取测试图片
-    # img = cv2.imread('./pinshi.png')
-    # cv2.imshow("Original Image", img)
-    # cv2.waitKey(0)
-    #
-    # # 处理图像并获取绘制后的结果
-    # _, img_pre = draw_detection(img, True, True, True, encodings, names)
-    # cv2.imshow("Detection Result", img_pre)
-    # cv2.waitKey(0)
-    #
-    # cv2.destroyAllWindows()
-    run_camera(encodings, names, True, False, True)
+    # 读取测试图片
+    img = cv2.imread('./fushi.png')
+    show_auto_scaled_image(img, "Original Image")
+    # 处理图像并获取绘制后的结果
+    _, img_pre = draw_detection(img, True, True, True, encodings, names)
+    show_auto_scaled_image(img_pre, "Detection Result")
+
+
+if __name__ == "__main__":
+    main()

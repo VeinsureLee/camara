@@ -144,7 +144,9 @@ python main.py
 
 #### 🔜 Web page displaying camera feed
 
-To be continued
+For details, please refer to the demo/pic/webpage.
+
+(Basic video show by computer camera)
 
 ---
 
