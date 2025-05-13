@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 import cv2
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
+from django.shortcuts import get_object_or_404, redirect
+from django.views.decorators.http import require_POST
 
 
 def register_view(request):
@@ -131,3 +133,16 @@ def settings_view(request):
 
 def help_view(request):
     return render(request, 'myapp/help.html')
+
+
+def test_view(request):
+    return render(request, 'myapp/test.html')
+
+
+@login_required
+@require_POST
+def delete_scene(request, scene_id):
+    scene = get_object_or_404(Scene, id=scene_id, user=request.user)
+    scene.delete()
+    return redirect('home')
+

@@ -14,4 +14,6 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('settings/', views.settings_view, name='settings'),
     path('help/', views.help_view, name='help'),
+    path('test/', views.test_view, name='test'),
+    path('delete_scene/<int:scene_id>/', views.delete_scene, name='delete_scene'),
 ]
