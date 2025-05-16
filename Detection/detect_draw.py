@@ -135,7 +135,7 @@ def draw_detection(frame,
         # 可选：绘制中心点
         # cv2.circle(frame_drawn, center, 5, (255, 0, 0), -1)
 
-    return frame, frame_drawn
+    return frame, frame_drawn, detections
 
 
 def run_camera(known_face_encodings, known_face_names,
@@ -154,7 +154,7 @@ def run_camera(known_face_encodings, known_face_names,
         if not ret:
             break
 
-        original_frame, processed_frame = draw_detection(
+        original_frame, processed_frame, _ = draw_detection(
             frame, human_enable, face_enable, action_enable,
             known_face_encodings, known_face_names,
             cfg1, cfg2

@@ -151,3 +151,14 @@ For details, please refer to the demo/pic/webpage.
 ---
 
 
+#### 🔜 mission in next step
+
+Database:
+
+Complete connections between database and detection, 
+warning when danger appear.
+
+WebPage:
+
+Complete video show by camera, 
+design detection usage to recognize.

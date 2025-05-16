@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from tcp_receiver import TCPVideoReceiver
+from .utils.tcp_receiver import TCPVideoReceiver
 
 
 class MyappConfig(AppConfig):
@@ -7,7 +7,7 @@ class MyappConfig(AppConfig):
     name = 'myapp'
 
     def ready(self):
-        from . import models  # 使用相对导入，避免模块找不到
+        pass
 
 
 class VideoStreamConfig(AppConfig):

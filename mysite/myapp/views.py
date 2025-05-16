@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile, Scene
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_POST
-from tcp_receiver import shared_frame
+from .utils.tcp_receiver import shared_frame
 
 
 def register_view(request):

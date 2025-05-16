@@ -88,10 +88,10 @@ class CaptureThread(QThread):
                     CAPTURE_IMAGE_DATA_TMP = img
                 if HUMAN_ENABLE == 1:
                     print("正在识别中")
-                    _, img = draw_detection(img,
-                                            HUMAN_ENABLE, FACE_ENABLE, ACTION_ENABLE,
-                                            encodings, names,
-                                            action_model_config, human_model_config)
+                    _, img, detections = draw_detection(img,
+                                                        HUMAN_ENABLE, FACE_ENABLE, ACTION_ENABLE,
+                                                        encodings, names,
+                                                        action_model_config, human_model_config)
                     CAPTURE_IMAGE_DATA_TMP = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 if self.record_flag:
                     self.mp4_file.write(CAPTURE_IMAGE_DATA_TMP)
