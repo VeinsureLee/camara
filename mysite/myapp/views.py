@@ -9,6 +9,7 @@ from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_POST
+from tcp_receiver import shared_frame
 
 
 def register_view(request):
@@ -146,3 +147,16 @@ def delete_scene(request, scene_id):
     scene.delete()
     return redirect('home')
 
+
+def generate_frames():
+    while True:
+        if shared_frame is not None:
+            ret, jpeg = cv2.imencode('.jpg', shared_frame)
+            if ret:
+                frame = jpeg.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+def video_feed_camera(request):
+    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
