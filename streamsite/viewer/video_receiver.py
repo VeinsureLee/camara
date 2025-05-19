@@ -1,5 +1,6 @@
-from typing import Optional
 import socket, threading, io, time
+from typing import Optional
+
 from PIL import Image
 
 

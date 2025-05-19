@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'myapp',  # 加入我们新创建的应用
-    "channels",
+    "test",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

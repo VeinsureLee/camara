@@ -5,13 +5,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 import cv2
-from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_POST
-from .utils.tcp_receiver import shared_frame
+import io
+from PIL import Image
+from django.http import StreamingHttpResponse, HttpResponseServerError
+from django.views import View
+from .utils.tcp_receiver import receiver  # 引入刚才的实例
 
 
+# 注册页面
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -32,6 +36,7 @@ def register_view(request):
     return render(request, 'myapp/register.html')
 
 
+# 登录页面
 def login_view(request):
     error = ""
     if request.method == 'POST':
@@ -46,11 +51,13 @@ def login_view(request):
     return render(request, 'myapp/login.html', {'error': error})
 
 
+# 登出功能
 def logout_view(request):
     logout(request)  # 清除当前用户的会话
     return redirect('login')  # 注销后跳转到登录页面
 
 
+# 主页面
 @login_required
 def home_view(request):
     scenes = Scene.objects.filter(user=request.user)
@@ -59,6 +66,16 @@ def home_view(request):
     return render(request, 'myapp/home.html', {'scenes': scenes})
 
 
+# 案例删除功能
+@login_required
+@require_POST
+def delete_scene(request, scene_id):
+    scene = get_object_or_404(Scene, id=scene_id, user=request.user)
+    scene.delete()
+    return redirect('home')
+
+
+# 个人信息查看
 @login_required
 def profile_view(request):
     if request.method == 'POST' and request.FILES:
@@ -71,32 +88,9 @@ def profile_view(request):
     return render(request, 'myapp/profile.html')
 
 
+# 电脑摄像头调用查看
 def video_stream_view(request):
     return render(request, 'myapp/video_stream.html')
-
-
-# @csrf_exempt
-# def upload_image(request):
-#     if request.method == 'POST' and 'image' in request.FILES:
-#         image_data = request.FILES['image'].read()
-#         base64_data = base64.b64encode(image_data).decode('utf-8')
-#
-#         try:
-#             channel_layer = get_channel_layer()
-#             async_to_sync(channel_layer.group_send)(
-#                 "video_group",
-#                 {
-#                     "type": "send_frame",
-#                     "image": base64_data,
-#                 }
-#             )
-#         except ConnectionError:
-#             print("Redis连接失败，跳过广播。")
-#             pass
-#
-#         return JsonResponse({"status": "ok"})
-#
-#     return JsonResponse({"status": "fail"}, status=400)
 
 
 # 视频帧生成器
@@ -140,23 +134,28 @@ def test_view(request):
     return render(request, 'myapp/test.html')
 
 
-@login_required
-@require_POST
-def delete_scene(request, scene_id):
-    scene = get_object_or_404(Scene, id=scene_id, user=request.user)
-    scene.delete()
-    return redirect('home')
-
-
-def generate_frames():
+def mjpeg_generator():
+    """
+    把最新 frame 打包成 multipart/x-mixed-replace
+    """
+    boundary = b"--frame"
     while True:
-        if shared_frame is not None:
-            ret, jpeg = cv2.imencode('.jpg', shared_frame)
-            if ret:
-                frame = jpeg.tobytes()
-                yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        frame = receiver.latest_frame
+        if frame is None:
+            # 还没有数据，送一张灰底占位
+            img = Image.new("RGB", (480, 320), "gray")
+            buf = io.BytesIO();
+            img.save(buf, format="JPEG")
+            frame = buf.getvalue()
+        yield boundary + b"\r\nContent-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
 
 
-def video_feed_camera(request):
-    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+class VideoStreamView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            return StreamingHttpResponse(
+                mjpeg_generator(),
+                content_type="multipart/x-mixed-replace; boundary=frame",
+            )
+        except Exception as exc:
+            return HttpResponseServerError(f"Stream error: {exc}")

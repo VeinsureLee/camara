@@ -1,5 +1,5 @@
 """
-WSGI config for camera_stream project.
+WSGI config for streamsite project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'camera_stream.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'streamsite.settings')
 
 application = get_wsgi_application()

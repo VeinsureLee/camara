@@ -3,7 +3,7 @@ import camera
 import fpr
 import test
 # 创建线程
-t1 = threading.Thread(target=camara.main)
+t1 = threading.Thread(target=camera.main)
 t2 = threading.Thread(target=fpr.main)
 t3 = threading.Thread(target=test.main)
 
