@@ -15,6 +15,6 @@ urlpatterns = [
     path('settings/', views.settings_view, name='settings'),
     path('help/', views.help_view, name='help'),
     path('test/', VideoStreamView.as_view(), name='test'),
-    path('delete_scene/<int:scene_id>/', views.delete_scene, name='video-stream'),
+    path('delete_scene/<int:scene_id>/', views.delete_scene, name='delete_scene'),
 
 ]

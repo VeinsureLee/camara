@@ -13,6 +13,7 @@ from PIL import Image
 from django.http import StreamingHttpResponse, HttpResponseServerError
 from django.views import View
 from .utils.tcp_receiver import receiver  # 引入刚才的实例
+import time
 
 
 # 注册页面
@@ -135,19 +136,21 @@ def test_view(request):
 
 
 def mjpeg_generator():
-    """
-    把最新 frame 打包成 multipart/x-mixed-replace
-    """
     boundary = b"--frame"
     while True:
-        frame = receiver.latest_frame
+        frame = receiver.latest_frame  # 你的最新帧，bytes类型 JPEG
         if frame is None:
-            # 还没有数据，送一张灰底占位
+            # 还没有数据，返回灰色占位图
             img = Image.new("RGB", (480, 320), "gray")
-            buf = io.BytesIO();
+            buf = io.BytesIO()
             img.save(buf, format="JPEG")
             frame = buf.getvalue()
-        yield boundary + b"\r\nContent-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
+        # 发送一帧
+        yield boundary + b"\r\n"
+        yield b"Content-Type: image/jpeg\r\n\r\n"
+        yield frame
+        yield b"\r\n"
+        time.sleep(0.05)  # 控制帧率，避免刷太快卡顿
 
 
 class VideoStreamView(View):
