@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-# from .views import VideoStreamView
+from .views import VideoStreamView
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -14,10 +14,9 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('settings/', views.settings_view, name='settings'),
     path('help/', views.help_view, name='help'),
-    path('test/', views.test_view, name='test'),
     path('delete_scene/<int:scene_id>/', views.delete_scene, name='delete_scene'),
     path('test/', views.test_view, name='test'),  # 用于展示所有场景
     path('scene/<int:scene_id>/update/', views.update_scene, name='update_scene'),
-
+    path('video_stream_class/', VideoStreamView.as_view(), name='video_stream_class'),
 
 ]
