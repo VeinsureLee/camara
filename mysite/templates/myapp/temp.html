@@ -1,0 +1,136 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #ffffff !important;
+    }
+    .monitor-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+        color: white;
+        margin-top: 30px;
+    }
+    #video-frame {
+        width: 720px;
+        height: auto;
+        border: 2px solid #fff;
+        border-radius: 8px;
+        background-color: #000;
+    }
+    .control-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 200px;
+    }
+    .control-panel select,
+    .control-panel button {
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .control-panel button {
+        background-color: #ffffff;
+        color: #2571d2;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+    .control-panel button:hover {
+        background-color: #dbe9ff;
+    }
+</style>
+
+<h2 class="text-white text-center mb-4">远程监控画面</h2>
+
+<div class="monitor-container">
+    {% for scene in scenes %}
+    <!-- 视频画面 -->
+    <div>
+        <h4 style="color: black;">{{ scene.name }}</h4>
+        <p style="color: black;">
+            地点：{{ scene.location }}<br>
+            序列号：{{ scene.serial_number }}<br>
+            备注：{{ scene.notes }}
+        </p>
+        <img
+            src="{% url 'test' %}"
+            alt="实时视频流"
+            style="background: #ccc; width: 640px; height: 360px;"
+            onerror="this.style.background='#222'; this.alt='无法加载视频流';"
+        />
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="control-panel">
+        <label for="scene-select">选择场景：</label>
+        <select id="scene-select" class="form-select">
+            <option value="home">家居场景</option>
+            <option value="traffic">交通场景</option>
+        </select>
+
+        <div id="home-controls" style="display: block;">
+            <button onclick="toggleFeature(this, 'person')">开启人类识别</button>
+            <button onclick="toggleFeature(this, 'face')">开启人脸识别</button>
+            <button onclick="toggleFeature(this, 'action')">开启动作识别</button>
+        </div>
+
+        <div id="traffic-controls" style="display: none;">
+            <button onclick="toggleFeature(this, 'plate')">开启车牌识别</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // 场景切换按钮组控制
+    const sceneSelect = document.getElementById('scene-select');
+    const homeControls = document.getElementById('home-controls');
+    const trafficControls = document.getElementById('traffic-controls');
+
+    sceneSelect.addEventListener('change', () => {
+        if (sceneSelect.value === 'home') {
+            homeControls.style.display = 'block';
+            trafficControls.style.display = 'none';
+        } else {
+            homeControls.style.display = 'none';
+            trafficControls.style.display = 'block';
+        }
+    });
+
+    // 模拟识别按钮触发行为
+    function startDetection(type) {
+        console.log("开始识别类型：", type);
+        // 可以用 fetch 或 WebSocket 通知后端开始某种识别
+    }
+    const detectionStates = {
+        face: false,
+        person: false,
+        action: false,
+        plate: false
+    };
+
+    function toggleFeature(button, type) {
+        detectionStates[type] = !detectionStates[type];
+        button.textContent = detectionStates[type] ? `关闭${getLabel(type)}` : `开启${getLabel(type)}`;
+
+        // 可选：调用后端处理（通过 fetch 或 WebSocket）
+        console.log(`${detectionStates[type] ? '启用' : '关闭'} ${type} 识别`);
+    }
+
+    function getLabel(type) {
+        switch (type) {
+            case 'face': return '人脸识别';
+            case 'person': return '人类识别';
+            case 'action': return '动作识别';
+            case 'plate': return '车牌识别';
+            default: return '识别功能';
+        }
+    }
+</script>
+{% endblock %}

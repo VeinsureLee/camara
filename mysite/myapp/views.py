@@ -89,6 +89,18 @@ def profile_view(request):
     return render(request, 'myapp/profile.html')
 
 
+# 详细信息修改
+@login_required
+def update_scene(request, scene_id):
+    scene = get_object_or_404(Scene, id=scene_id, user=request.user)
+    if request.method == "POST":
+        scene.location = request.POST.get('location', '')
+        scene.serial_number = request.POST.get('serial_number', '')
+        scene.notes = request.POST.get('notes', '')
+        scene.save()
+    return redirect('home')  # 或者你页面的名称
+
+
 # 电脑摄像头调用查看
 def video_stream_view(request):
     return render(request, 'myapp/video_stream.html')
@@ -131,8 +143,14 @@ def help_view(request):
     return render(request, 'myapp/help.html')
 
 
-def test_view(request):
-    return render(request, 'myapp/test.html')
+@login_required
+def test_view(request, scene_id=None):
+    if scene_id:
+        scene = get_object_or_404(Scene, id=scene_id, user=request.user)
+        return render(request, 'myapp/test.html', {'scene': scene})
+    else:
+        scenes = Scene.objects.filter(user=request.user)
+        return render(request, 'myapp/test.html', {'scenes': scenes})
 
 
 def mjpeg_generator():

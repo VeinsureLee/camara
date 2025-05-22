@@ -1,21 +1,17 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
 <style>
-.rotate-icon {
-    transition: transform 0.3s ease;
-}
-button[aria-expanded="true"] .rotate-icon {
-    transform: rotate(90deg);
-}
+    .rotate-icon {
+        transition: transform 0.3s ease;
+    }
+    button[aria-expanded="true"] .rotate-icon {
+        transform: rotate(90deg);
+    }
 </style>
 
-{% extends 'myapp/base.html' %}
-
-{% block content %}
 <div class="container mt-4">
-
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary">
-<!--            <img src="/static/favicon.ico" width="32" height="32" class="me-2">-->
-<!--            欢迎，{{ user.username }}-->
             {% if request.user.is_authenticated %}
                 <img src="{{ request.user.profile.avatar.url }}" width="32" height="32" class="rounded-circle me-2">
                 欢迎，{{ request.user.username }}
@@ -57,23 +53,67 @@ button[aria-expanded="true"] .rotate-icon {
                     </div>
 
                     <div class="collapse mt-2" id="scene-{{ scene.id }}">
-                        <div class="d-flex gap-2">
-                            <!-- 你可以添加更多操作按钮 -->
-                            <form method="post" action="{% url 'delete_scene' scene.id %}">
+                        <div class="scene-display" id="display-{{ scene.id }}">
+                            <div class="row mb-2">
+                                <div class="col-md-3"><strong>地点：</strong> {{ scene.location|default:"未填写" }}</div>
+                                <div class="col-md-3"><strong>序列号：</strong> {{ scene.serial_number|default:"未填写" }}</div>
+                                <div class="col-md-4"><strong>备注：</strong> {{ scene.notes|default:"无" }}</div>
+                                <div class="col-md-2">
+                                    <a href="{% url 'test' %}?scene_id={{ scene.id }}" class="btn btn-sm btn-primary">跳转详情页</a>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <form method="post" action="{% url 'delete_scene' scene.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                                </form>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleEdit({{ scene.id }})">编辑</button>
+                            </div>
+                        </div>
+
+                        <!-- 编辑表单区域 --> <!-- NEW -->
+                        <div class="scene-edit d-none" id="edit-{{ scene.id }}">
+                            <form method="post" action="{% url 'update_scene' scene.id %}" class="mb-2">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <input type="text" name="location" class="form-control" placeholder="地点" value="{{ scene.location }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" name="serial_number" class="form-control" placeholder="序列号" value="{{ scene.serial_number }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="notes" class="form-control" placeholder="备注" value="{{ scene.notes }}">
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <a href="{% url 'test' %}?scene_id={{ scene.id }}" class="btn btn-sm btn-primary">跳转详情页</a>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-sm btn-success">保存</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="toggleEdit({{ scene.id }})">取消</button>
+                                </div>
                             </form>
-                            <a href="#" class="btn btn-sm btn-outline-primary disabled">编辑（待实现）</a>
                         </div>
                     </div>
+
+
+
+
                 </li>
             {% empty %}
                 <li class="list-group-item text-muted">暂无案例</li>
             {% endfor %}
         </ul>
-
-
     </div>
-
 </div>
+
+<script>
+    function toggleEdit(sceneId) {
+        const displayDiv = document.getElementById(`display-${sceneId}`);
+        const editDiv = document.getElementById(`edit-${sceneId}`);
+        displayDiv.classList.toggle('d-none');
+        editDiv.classList.toggle('d-none');
+    }
+</script>
 {% endblock %}
